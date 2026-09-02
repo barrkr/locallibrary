@@ -5,3 +5,8 @@ requires-python = ">=3.14"
 dependencies = [
     "django>=6.1",
 ]
+
+[dependency-groups]
+dev = [
+    "pylint-django>=2.8.0",
+]
