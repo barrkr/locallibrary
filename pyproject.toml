@@ -13,3 +13,8 @@ dependencies = [
 dev = [
     "pylint-django>=2.8.0",
 ]
+prod = [
+    "daphne>=4.2.3",
+    "gunicorn>=26.2.0",
+    "psycopg[binary]>=3.3.6",
+]
