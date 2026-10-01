@@ -82,8 +82,13 @@ WSGI_APPLICATION = 'locallibrary_config.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db(default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        'TEST': {
+            'NAME': BASE_DIR / 'test_db.sqlite3',
+        },
+    }
 }
 
 
@@ -144,7 +149,11 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            # "hosts": [("127.0.0.1", 6379)],
+            "hosts": [{
+                "address": "redis://127.0.0.1:6379/",
+                "socket_timeout": None,
+            }],
         },
     },
 }
