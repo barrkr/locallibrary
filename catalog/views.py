@@ -37,6 +37,8 @@ from django.views import generic
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
+    # Fetch every listed book's authors in one query instead of one per book
+    queryset = Book.objects.prefetch_related('bookauthor_set__author')
 
 class BookDetailView(generic.DetailView):
     model = Book

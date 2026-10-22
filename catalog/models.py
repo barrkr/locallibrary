@@ -63,10 +63,7 @@ class Language(models.Model):
 class Book(models.Model):
     """Model representing a book (but not a specific copy of a book)."""
     title = models.CharField(max_length=200)
-    author = models.ForeignKey('Author', on_delete=models.RESTRICT, null=True)
-    # Foreign Key used because book can only have one author, but authors can have multiple books.
-    # Author as a string rather than object because it hasn't been declared yet in file.
-
+    authors = models.ManyToManyField('Author', through="BookAuthor", related_name="books")
     summary = models.TextField(
         max_length=1000, help_text="Enter a brief description of the book")
     isbn = models.CharField('ISBN', max_length=13,
@@ -147,3 +144,19 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
+
+
+class BookAuthor(models.Model):
+    book = models.ForeignKey('Book', on_delete=models.CASCADE)
+    author = models.ForeignKey('Author', on_delete=models.RESTRICT)
+    author_order = models.PositiveSmallIntegerField(default=1)
+
+    class Meta:
+        ordering = ['book', 'author_order']
+        constraints = [
+            UniqueConstraint(fields=['book', 'author'], name='bookauthor_unique_author_per_book'),
+            UniqueConstraint(fields=['book', 'author_order'], name='bookauthor_unique_order_per_book'),
+        ]
+
+    def __str__(self):
+        return f'{self.book.title}: {self.author} (#{self.author_order})'
