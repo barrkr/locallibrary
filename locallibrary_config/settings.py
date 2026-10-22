@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Add our new application
     'catalog.apps.CatalogConfig',  # This object was created for us in /catalog/apps.py
     'chat',
+    'ninja',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +86,10 @@ WSGI_APPLICATION = 'locallibrary_config.wsgi.application'
 DATABASES = {
     "default": env.db(default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
 }
+
+# ChannelsLiveServerTestCase can't use an in-memory SQLite test database
+if DATABASES["default"]["ENGINE"] == "django.db.backends.sqlite3":
+    DATABASES["default"]["TEST"] = {"NAME": BASE_DIR / "db_test.sqlite3"}
 
 
 # Password validation
