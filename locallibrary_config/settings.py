@@ -38,14 +38,15 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 INSTALLED_APPS = [
     'daphne',
+    # Listed before django.contrib.admin so our registration/ templates
+    # (e.g. logged_out.html) take precedence over the admin's versions
+    'catalog.apps.CatalogConfig',  # This object was created for us in /catalog/apps.py
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Add our new application
-    'catalog.apps.CatalogConfig',  # This object was created for us in /catalog/apps.py
     'chat',
     'ninja',
 ]
