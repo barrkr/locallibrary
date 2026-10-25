@@ -19,8 +19,11 @@
     <li><strong>Authors:</strong> {{ num_authors }}</li>
     <li><strong>Book titles containing 'the':</strong> {{ num_matches_the }}</li>
     <li><strong>Book genres containing 'fiction':</strong> {{ num_matches_fiction }}</li>
-
   </ul>
+
+  <p>
+    You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.
+  </p>
   <img src="https://w3.cs.jmu.edu/cs347/f26/stewart.jpeg" alt="Dr. Stewart rockin' that Carolina Blue koy Kahala">
   <img src="../static/2010-kodiak-bear-1.jpg" alt="kodiak bear">
 {% endblock %}

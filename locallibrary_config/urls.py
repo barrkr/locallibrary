@@ -22,30 +22,16 @@ from django.conf.urls.static import static
 from django.urls import include
 from django.views.generic import RedirectView
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
-
-# Use include() to add paths from the catalog application
-
-urlpatterns += [
+    # Use include() to add paths from the catalog application
     path('catalog/', include('catalog.urls')),
-]
-
-# Add URL maps to redirect the base URL to our application
-urlpatterns += [
+    # Add URL maps to redirect the base URL to our application
     path('', RedirectView.as_view(url='catalog/')),
+    path('chat/', include('chat.urls')),
+    path('api/', api.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 # Use static() to add URL mapping to serve static files during development (only)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-urlpatterns += [
-    path('chat/', include('chat.urls')),
-]
-
-urlpatterns += [
-    path('api/', api.urls),
-]
-
