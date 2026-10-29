@@ -176,12 +176,17 @@ class BookAuthorFormSetMixin:
         return context
 
     def form_valid(self, form):
-        author_formset = BookAuthorFormSet(self.request.POST, instance=form.instance)
-        if not author_formset.is_valid():
-            return self.form_invalid(form)
+        # Only process the formset if it was submitted (a POST with just the
+        # book's fields should still save the book).
+        author_formset = None
+        if 'bookauthor_set-TOTAL_FORMS' in self.request.POST:
+            author_formset = BookAuthorFormSet(self.request.POST, instance=form.instance)
+            if not author_formset.is_valid():
+                return self.form_invalid(form)
         self.object = form.save()
-        author_formset.instance = self.object
-        author_formset.save()
+        if author_formset is not None:
+            author_formset.instance = self.object
+            author_formset.save()
         return HttpResponseRedirect(self.get_success_url())
 
 class BookCreate(PermissionRequiredMixin, BookAuthorFormSetMixin, CreateView):
